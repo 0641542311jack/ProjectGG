@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1015909736700",
+    "project_id": "cdvdd-7cdda",
+    "storage_bucket": "cdvdd-7cdda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015909736700:android:12a039ae3b7facc051f779",
+        "android_client_info": {
+          "package_name": "com.example.champ12345"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAanLPHltIh78uwjvRxOWXIQe-dEFpNdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
