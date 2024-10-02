@@ -27,7 +27,20 @@ class _OnboardingState extends State<Onboarding> {
                   width: 350,
                   height: 400,
                   fit: BoxFit.cover,
-                ),SizedBox(height: 55,),
+                ),
+                // TextFormField(
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'กรุณากรอกชื่อ';
+                //     }
+                //     return null;
+                //   },
+                //   decoration: InputDecoration(
+                //       hintText: "Name", prefixIcon: Icon(Icons.person_outline)),
+                // ),
+                SizedBox(
+                  height: 55,
+                ),
                 SizedBox(
                   width: double.infinity,
                   height: 130, //ขนาดปุ่ม
@@ -88,6 +101,38 @@ class _OnboardingState extends State<Onboarding> {
                             ),
                           ),
                         ))),
+                //     SizedBox(
+                //       width: double.infinity,
+                // height: 110,
+                // child: Padding(
+                //     padding: EdgeInsets.only(top: 22),
+                //     child: Container(
+                //       decoration: BoxDecoration(boxShadow: [
+                //         BoxShadow(
+                //           color: Colors.black26.withOpacity(0.5), //สีเงา
+                //           spreadRadius: 7, //รัศมีการกระจาย
+                //           blurRadius: 30, //ความเบลอ
+                //           offset: Offset(0, 10),
+                //         ),
+                //       ]),
+                //       child: ElevatedButton(
+                //         onPressed: () {
+                //           Navigator.pushReplacement(context,
+                //               MaterialPageRoute(builder: (context) {
+                //             return LogIn(); //เชื่อมไปหน้า login
+                //           }));
+                //         },
+                //         child: Text(
+                //           "ลูก8o",
+                //           style: TextStyle(
+                //               fontSize: 25,
+                //               color: const Color.fromARGB(255, 10, 36, 66)),
+                //         ),
+
+                //       ),
+                //     ))
+
+                //     )
               ],
             ),
           ),

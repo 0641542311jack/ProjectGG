@@ -21,13 +21,12 @@ class _Login_OwnerState extends State<Login_Owner> {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: mail!, password: password!);
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
           "Login Successful!",
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 60, 58, 58),
       ));
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Home_owner()));

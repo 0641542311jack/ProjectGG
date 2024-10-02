@@ -1,3 +1,4 @@
+import 'package:barberapp/Admin/HomeAdmin.dart';
 import 'package:barberapp/Admin/booking_admin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ class _AdminLoginState extends State<AdminLogin> {
           )));
         } else {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => BookingAdmin()));
+              context, MaterialPageRoute(builder: (context) => HomeAdmin()));
         }
       });
     });
