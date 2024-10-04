@@ -1,6 +1,11 @@
+import 'package:barberapp/Admin/face_admin.dart';
+import 'package:barberapp/Admin/hair_admin.dart';
+import 'package:barberapp/Admin/user_admin.dart';
 import 'package:barberapp/pages/booking.dart';
 import 'package:barberapp/pages/hair.dart';
+import 'package:barberapp/pages/onboarding.dart';
 import 'package:barberapp/shop_owner/login_owner.dart';
+import 'package:barberapp/shop_owner/edit_shop.dart';
 import 'package:flutter/material.dart';
 
 class HomeAdmin extends StatefulWidget {
@@ -30,7 +35,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Login_Owner()));
+                                builder: (context) => User_Admin()));
                       },
                       child: Container(
                         height: 130,
@@ -80,7 +85,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Login_Owner()));
+                                builder: (context) => Shop()));
                       },
                       child: Container(
                         height: 130,
@@ -130,7 +135,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Login_Owner()));
+                                builder: (context) => AddDataPage()));
                       },
                       child: Container(
                         height: 130,
@@ -180,7 +185,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Login_Owner()));
+                                builder: (context) => AddFaceDataPage()));
                       },
                       child: Container(
                         height: 130,
@@ -209,6 +214,56 @@ class _HomeAdminState extends State<HomeAdmin> {
                             SizedBox(height: 1),
                             Text(
                               "ข้อมูลใบหน้า",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),SizedBox(height: 15,),
+              Row(
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Onboarding()));
+                      },
+                      child: Container(
+                        height: 130,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 50, 83, 125),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color:
+                                    Colors.black.withOpacity(0.6), // สีของเงา
+                                spreadRadius: 5, // การกระจายของเงา
+                                blurRadius: 20, // การเบลอของเงา
+                                offset: Offset(0, 3), // ตำแหน่งของเงา
+                              )
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "images/signout.png",
+                              height: 80,
+                              width: 100,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(height: 1),
+                            Text(
+                              "ออกจากระบบ",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,

@@ -7,8 +7,11 @@ import 'package:barberapp/pages/booking_user.dart';
 import 'package:barberapp/pages/hair.dart';
 import 'package:barberapp/pages/login.dart';
 import 'package:barberapp/pages/myface.dart';
+import 'package:barberapp/pages/onboarding.dart';
+import 'package:barberapp/pages/shop_user.dart';
 import 'package:barberapp/pages/viewmap.dart';
 import 'package:barberapp/services/shared_pref.dart';
+import 'package:barberapp/shop_owner/edit_shop.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -122,7 +125,7 @@ class _HomeState extends State<Home> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    Hair(service: 'แนะนำทรงผม')));
+                                    Hairshow()));
                       },
                       child: Container(
                         height: 130,
@@ -169,7 +172,7 @@ class _HomeState extends State<Home> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    Myface(service: "แนะนำโครงหน้า")));
+                                    Faceshow()));
                       },
                       child: Container(
                         height: 130,
@@ -462,7 +465,7 @@ class _HomeState extends State<Home> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LogIn(),
+                            builder: (context) => ShopViewer(),
                           ),
                         );
                       },
@@ -484,14 +487,14 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              "images/signout.png",
+                              "images/edshop.png",
                               height: 80,
-                              width: 160,
+                              width: 120,
                               fit: BoxFit.cover,
                             ),
                             SizedBox(height: 1),
                             Text(
-                              "ออกจากระบบ",
+                              "ข้อมูลร้าน",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -543,7 +546,55 @@ class _HomeState extends State<Home> {
                             ),
                             SizedBox(height: 1),
                             Text(
-                              "ถ่ายภาพและเลือกทรงผม",
+                              "เลือกทรงผม",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20,),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Onboarding(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 120,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 50, 83, 125),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.6),
+                                spreadRadius: 5,
+                                blurRadius: 20,
+                                offset: Offset(0, 3),
+                              )
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "images/signout.png",
+                              height: 80,
+                              width: 160,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(height: 1),
+                            Text(
+                              "ออกจากระบบ",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
