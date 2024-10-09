@@ -52,7 +52,7 @@ class Hairshow extends StatelessWidget {
                                 height: 150,
                                 width: double.infinity, // ทำให้กว้างเต็มที่
                                 fit: BoxFit
-                                    .cover, // ปรับขนาดให้พอดีกับ Container
+                                    .fitHeight, // ปรับขนาดให้พอดีกับ Container
                               ),
                             )
                           : Container(),

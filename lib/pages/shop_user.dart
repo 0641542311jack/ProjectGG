@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:io';
 
 class ShopViewer extends StatefulWidget {
   @override
@@ -8,93 +7,51 @@ class ShopViewer extends StatefulWidget {
 }
 
 class _ShopViewerState extends State<ShopViewer> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<String> _imageUrls = [];
 
-  // Function to fetch images from Firestore by position ("top" or "bottom")
-  Stream<QuerySnapshot> _getImagesByPosition(String position) {
-    return _firestore
-        .collection('Shop')
-        .where('position', isEqualTo: position)
-        .orderBy('timestamp', descending: true)
-        .snapshots();
+  @override
+  void initState() {
+    super.initState();
+    _loadImages();
+  }
+
+  Future<void> _loadImages() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('images').get();
+    setState(() {
+      _imageUrls = snapshot.docs.map((doc) => doc['url'] as String).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Color.fromARGB(255, 4, 37, 72),
       appBar: AppBar(
-        title: Text('Shop Viewer'),
+        title: Text(
+          'เกี่ยวกับร้านตัดผม',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor:
+            const Color.fromARGB(255, 4, 37, 72), // เปลี่ยนสี AppBar
+        iconTheme: IconThemeData(
+          color: Colors.white, // เปลี่ยนสีลูกศรย้อนกลับเป็นสีขาว
+        ),
       ),
-      body: Column(
-        children: [
-          // ส่วนแสดงรูปภาพ "top"
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _getImagesByPosition("top"),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
-
-                final images = snapshot.data!.docs;
-                if (images.isEmpty) {
-                  return Center(child: Text('ไม่มีรูปภาพเกี่ยวกับร้านตัดผม'));
-                }
-
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: images.length,
-                  itemBuilder: (context, index) {
-                    final url = images[index]['url'];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.file(
-                        File(url), // URL ที่เก็บใน Firestore เป็น path ของไฟล์รูปภาพในเครื่อง
-                        fit: BoxFit.cover,
-                        width: 200, // ขนาดความกว้างของรูปภาพ
-                      ),
-                    );
-                  },
+      body: _imageUrls.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: _imageUrls.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 1.0), // ระยะห่างระหว่างภาพ
+                  child: Image.network(
+                    _imageUrls[index],
+                    fit: BoxFit.cover,
+                    width: double.infinity, // กำหนดให้กว้างเต็มที่
+                    height: 200, // ความสูงของภาพ
+                  ),
                 );
               },
             ),
-          ),
-          Divider(),
-
-          // ส่วนแสดงรูปภาพ "bottom"
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _getImagesByPosition("bottom"),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
-
-                final images = snapshot.data!.docs;
-                if (images.isEmpty) {
-                  return Center(child: Text('ไม่มีรูปภาพผลงานร้านตัดผม'));
-                }
-
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: images.length,
-                  itemBuilder: (context, index) {
-                    final url = images[index]['url'];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.file(
-                        File(url), // URL ที่เก็บใน Firestore เป็น path ของไฟล์รูปภาพในเครื่อง
-                        fit: BoxFit.cover,
-                        width: 200, // ขนาดความกว้างของรูปภาพ
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

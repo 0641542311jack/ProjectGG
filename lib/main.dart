@@ -3,6 +3,7 @@ import 'package:barberapp/Admin/admin_login.dart';
 import 'package:barberapp/Admin/booking_admin.dart';
 import 'package:barberapp/Admin/hair_admin.dart';
 import 'package:barberapp/Admin/user_admin.dart';
+import 'package:barberapp/Camera/HairstyleOverlayScreen.dart';
 import 'package:barberapp/Camera/HomeScreen.dart';
 import 'package:barberapp/pages/Camera.dart';
 import 'package:barberapp/pages/VDOHAIR.dart';
@@ -20,6 +21,7 @@ import 'package:barberapp/pages/vdo_hair03.dart';
 import 'package:barberapp/pages/vdo_hair04.dart';
 import 'package:barberapp/pages/viewmap.dart';
 import 'package:barberapp/shop_owner/Home_owner.dart';
+import 'package:barberapp/shop_owner/map_owner.dart';
 import 'package:barberapp/shop_owner/onboarding_owner.dart';
 import 'package:barberapp/shop_owner/edit_shop.dart';
 import 'package:barberapp/test/test.dart';
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:Home());
+        home: Onboarding());
   }
 }
 

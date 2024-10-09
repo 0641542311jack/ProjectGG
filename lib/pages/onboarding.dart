@@ -40,11 +40,11 @@ class _OnboardingState extends State<Onboarding> {
                 //       hintText: "Name", prefixIcon: Icon(Icons.person_outline)),
                 // ),
                 SizedBox(
-                  height: 55,
+                  height: 20,
                 ),
                 SizedBox(
                   width: double.infinity,
-                  height: 120, //ขนาดปุ่ม
+                  height: 130, //ขนาดปุ่ม
                   child: Padding(
                       padding: EdgeInsets.only(top: 42),
                       child: Container(
@@ -72,7 +72,8 @@ class _OnboardingState extends State<Onboarding> {
                           ),
                         ),
                       )),
-                ),
+                ),SizedBox(height: 1,),
+
                 SizedBox(
                   width: double.infinity,
                   height: 130, //ขนาดปุ่ม

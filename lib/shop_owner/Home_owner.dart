@@ -9,6 +9,7 @@ import 'package:barberapp/pages/onboarding.dart';
 import 'package:barberapp/services/shared_pref.dart';
 import 'package:barberapp/shop_owner/booking_owner.dart';
 import 'package:barberapp/shop_owner/edit_shop.dart';
+import 'package:barberapp/shop_owner/map_owner.dart';
 import 'package:flutter/material.dart';
 
 class Home_owner extends StatefulWidget {
@@ -296,6 +297,59 @@ class _Home_ownerState extends State<Home_owner> {
                             SizedBox(height: 1),
                             Text(
                               "ร้านตัดผม",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MapsPage()));
+                      },
+                      child: Container(
+                        height: 120,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 50, 83, 125),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color:
+                                    Colors.black.withOpacity(0.6), // สีของเงา
+                                spreadRadius: 5, // การกระจายของเงา
+                                blurRadius: 20, // การเบลอของเงา
+                                offset: Offset(0, 3), // ตำแหน่งของเงา
+                              )
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "images/map.png",
+                              height: 88,
+                              width: 120,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(height: 1),
+                            Text(
+                              "แผนที่ร้าน",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,

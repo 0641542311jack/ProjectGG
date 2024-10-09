@@ -1,25 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'dart:io';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Image Picker',
-      home: Shop(),
-    );
-  }
-}
 
 class Shop extends StatefulWidget {
   @override
@@ -27,132 +10,109 @@ class Shop extends StatefulWidget {
 }
 
 class _ShopState extends State<Shop> {
-  final List<XFile> _imageFilesTop = [];  // สำหรับรูปภาพในส่วนบน
-  final List<XFile> _imageFilesBottom = []; // สำหรับรูปภาพในส่วนล่าง
-  final ImagePicker _picker = ImagePicker();
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<String> _imageUrls = [];
 
-  Future<void> _pickImage(bool isTop) async {
-    final List<XFile>? images = await _picker.pickMultiImage();
-    if (images != null) {
-      setState(() {
-        if (isTop) {
-          _imageFilesTop.addAll(images);
-          _addImagesToFirestore(images, "top");
-        } else {
-          _imageFilesBottom.addAll(images);
-          _addImagesToFirestore(images, "bottom");
-        }
-      });
+  @override
+  void initState() {
+    super.initState();
+    _loadImages();
+  }
+
+  Future<void> _loadImages() async {
+    QuerySnapshot snapshot = await _firestore.collection('images').get();
+    setState(() {
+      _imageUrls = snapshot.docs.map((doc) => doc['url'] as String).toList();
+    });
+  }
+
+  Future<void> _addImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      File file = File(pickedFile.path);
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      try {
+        // Uploading to Firebase Storage
+        TaskSnapshot snapshot =
+            await _storage.ref('images/$fileName').putFile(file);
+        String downloadUrl = await snapshot.ref.getDownloadURL();
+
+        // Save the image URL in Firestore
+        await _firestore.collection('images').add({'url': downloadUrl});
+
+        // Update local state
+        setState(() {
+          _imageUrls.add(downloadUrl);
+        });
+      } catch (e) {
+        print("Error uploading image: $e");
+      }
     }
   }
 
-  Future<void> _addImagesToFirestore(List<XFile> images, String position) async {
-    for (var image in images) {
-      await FirebaseFirestore.instance.collection('Shop').add({
-        'url': image.path, // แทนที่ด้วย URL ที่ต้องการหากมี
-        'position': position,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-    }
-  }
-
-  void _removeImage(bool isTop, int index) async {
-    if (isTop) {
-      await _removeImageFromFirestore(_imageFilesTop[index].path);
-      _imageFilesTop.removeAt(index);
-    } else {
-      await _removeImageFromFirestore(_imageFilesBottom[index].path);
-      _imageFilesBottom.removeAt(index);
-    }
-    setState(() {});
-  }
-
-  Future<void> _removeImageFromFirestore(String imagePath) async {
-    final querySnapshot = await FirebaseFirestore.instance
-        .collection('Shop')
-        .where('url', isEqualTo: imagePath)
+  Future<void> _removeImage(String url) async {
+    // Remove from Firestore
+    QuerySnapshot snapshot = await _firestore
+        .collection('images')
+        .where('url', isEqualTo: url)
         .get();
-
-    for (var doc in querySnapshot.docs) {
-      await doc.reference.delete();
+    if (snapshot.docs.isNotEmpty) {
+      await _firestore
+          .collection('images')
+          .doc(snapshot.docs.first.id)
+          .delete();
     }
+
+    // Remove from local state
+    setState(() {
+      _imageUrls.remove(url);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 4, 37, 72),
       appBar: AppBar(
-        title: Text('Shop'),
+        title: Text(
+          'เพิ่มข้อมูลร้านตัดผม',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor:
+            const Color.fromARGB(255, 4, 37, 72), // เปลี่ยนสี AppBar
+        iconTheme: IconThemeData(
+          color: Colors.white, // เปลี่ยนสีลูกศรย้อนกลับเป็นสีขาว
+        ),
       ),
       body: Column(
         children: [
-          // ส่วนบน
           Expanded(
-            child: _imageFilesTop.isEmpty
-                ? Center(child: Text('ไม่มีรูปภาพเกี่ยวกับร้านตัดผม'))
-                : CarouselSlider(
-                    options: CarouselOptions(
+            child: ListView.builder(
+              itemCount: _imageUrls.length,
+              itemBuilder: (context, index) {
+                return Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    Image.network(
+                      _imageUrls[index],
+                      width: double.infinity,
                       height: 200,
-                      enableInfiniteScroll: false,
-                      viewportFraction: 1.0,
+                      fit: BoxFit.fill,
                     ),
-                    items: _imageFilesTop.map((file) {
-                      return Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          Image.file(
-                            File(file.path),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              _removeImage(true, _imageFilesTop.indexOf(file));
-                            },
-                          ),
-                        ],
-                      );
-                    }).toList(),
-                  ),
+                    IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () => _removeImage(_imageUrls[index]),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
           ElevatedButton(
-            onPressed: () => _pickImage(true),
-            child: Icon(Icons.add),
-          ),
-
-          // ส่วนล่าง
-          Expanded(
-            child: _imageFilesBottom.isEmpty
-                ? Center(child: Text('ไม่มีรูปภาพผลงานร้านตัดผม'))
-                : CarouselSlider(
-                    options: CarouselOptions(
-                      height: 200,
-                      enableInfiniteScroll: false,
-                      viewportFraction: 1.0,
-                    ),
-                    items: _imageFilesBottom.map((file) {
-                      return Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          Image.file(
-                            File(file.path),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              _removeImage(false, _imageFilesBottom.indexOf(file));
-                            },
-                          ),
-                        ],
-                      );
-                    }).toList(),
-                  ),
-          ),
-          ElevatedButton(
-            onPressed: () => _pickImage(false),
+            onPressed: _addImage,
             child: Icon(Icons.add),
           ),
         ],

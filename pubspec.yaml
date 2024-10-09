@@ -51,6 +51,8 @@ dependencies:
   screenshot: ^3.0.0
   carousel_slider: ^5.0.0
   firebase_storage:
+  font_awesome_flutter:
+  
   
 
   # The following adds the Cupertino Icons font to your application.
