@@ -1,4 +1,5 @@
 import 'package:barberapp/Camera/HomeScreen.dart';
+import 'package:barberapp/Camera/Home_user.dart';
 import 'package:barberapp/pages/Camera.dart';
 import 'package:barberapp/pages/UserProfilePage.dart';
 import 'package:barberapp/pages/VDOHAIR.dart';
@@ -517,7 +518,7 @@ class _HomeState extends State<Home> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
+                            builder: (context) => Home_user(),
                           ),
                         );
                       },

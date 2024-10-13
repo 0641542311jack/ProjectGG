@@ -1,5 +1,6 @@
 import 'package:barberapp/Admin/face_admin.dart';
 import 'package:barberapp/Admin/hair_admin.dart';
+import 'package:barberapp/Camera/HomeScreen.dart';
 import 'package:barberapp/pages/UserProfilePage.dart';
 import 'package:barberapp/pages/VDOHAIR.dart';
 import 'package:barberapp/pages/booking_user.dart';
@@ -365,6 +366,56 @@ class _Home_ownerState extends State<Home_owner> {
               SizedBox(
                 height: 15,
               ),
+               Row(
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()));
+                      },
+                      child: Container(
+                        height: 120,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 50, 83, 125),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color:
+                                    Colors.black.withOpacity(0.6), // สีของเงา
+                                spreadRadius: 5, // การกระจายของเงา
+                                blurRadius: 20, // การเบลอของเงา
+                                offset: Offset(0, 3), // ตำแหน่งของเงา
+                              )
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "images/Camera.png",
+                              height: 80,
+                              width: 160,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(height: 1),
+                            Text(
+                              "เลือกทรงผม",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),SizedBox(height: 15,),
               Row(
                 children: [
                   Flexible(

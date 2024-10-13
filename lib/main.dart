@@ -5,6 +5,7 @@ import 'package:barberapp/Admin/hair_admin.dart';
 import 'package:barberapp/Admin/user_admin.dart';
 import 'package:barberapp/Camera/HairstyleOverlayScreen.dart';
 import 'package:barberapp/Camera/HomeScreen.dart';
+import 'package:barberapp/Camera/Home_user.dart';
 import 'package:barberapp/pages/Camera.dart';
 import 'package:barberapp/pages/VDOHAIR.dart';
 import 'package:barberapp/pages/booking.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Onboarding());
+        home: Home());
   }
 }
 
